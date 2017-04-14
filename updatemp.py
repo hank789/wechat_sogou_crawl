@@ -32,6 +32,7 @@ wechats = WechatSogouApi() #不使用外部Cookie
 mysql = mysql('wechat_mp_info')
 
 #循环获取数据库中所有公众号
+mysql.where_sql = " status=1 "
 mysql.order_sql = " order by _id desc"
 mp_list = mysql.find(0)
 succ_count = 0
