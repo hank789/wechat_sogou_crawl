@@ -29,7 +29,7 @@ wechats = WechatSogouApi()
 
 #数据库实例
 mysql.order_sql = " order by _id desc"
-mysql = mysql('mp_info')
+mysql = mysql('wechat_mp_info')
 
 #循环获取数据库中所有公众号
 mp_list = mysql.find(0)
@@ -43,7 +43,7 @@ for item in mp_list:
     try:
         #为了效率，首先查看该公众号是否有24小时之内的文章
         mysql.where_sql = "mp_id=%d and date_time >'%s'" %(item['_id'],yes_time)
-        wz_time = mysql.table('wenzhang_info').find(1)
+        wz_time = mysql.table('wechat_wenzhang_info').find(1)
         if not wz_time :
             continue
 
@@ -69,7 +69,7 @@ for item in mp_list:
             wz_url = wechat_info['url'];
             wz_list = wechats.get_gzh_message(url=wz_url)
             mysql.where_sql = " _id=%s" %(item['_id'])
-            mysql.table('mp_info').save({'wz_url':wechat_info['url'],'logo_url':wechat_info['img'],'qr_url':wechat_info['qrcode']})
+            mysql.table('wechat_mp_info').save({'wz_url':wechat_info['url'],'logo_url':wechat_info['img'],'qr_url':wechat_info['qrcode']})
         #type==49表示是图文消息
         #print('3')
         for wz_item in wz_list :
@@ -83,7 +83,7 @@ for item in mp_list:
                 article_info = wechats.deal_article(url=wz_item['content_url'])
                 mysql.where_sql = " mp_id=%d and qunfa_id=%d and msg_index=%d" %(item['_id'],wz_item['qunfa_id'],wz_item['main'])
                 #print(mysql.where_sql)
-                wz_data = mysql.table('wenzhang_info').find(1)
+                wz_data = mysql.table('wechat_wenzhang_info').find(1)
                 if not wz_data :
                     print(u"公众号有新文章了，请执行Updtaemp.py进行抓取")
                     continue
@@ -96,7 +96,7 @@ for item in mp_list:
                 comment_count = wz_data['comment_count']
                 print "%d new_read:%d  new_like:%d read:%d  like:%d" %(wz_data['_id'], article_info['comment']['read_num'],article_info['comment']['like_num'],read_count,like_count)
                 #把文章写入数据库
-                mysql.table('wenzhang_statistics').add({'wz_id':wz_data['_id'],
+                mysql.table('wechat_wenzhang_statistics').add({'wz_id':wz_data['_id'],
                                                 'create_time':time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())),
                                                 'read_count':int(article_info['comment']['read_num'])-read_count,
                                                 'like_count':int(article_info['comment']['like_num'])-like_count,
@@ -104,7 +104,7 @@ for item in mp_list:
                 #print('5')
             #更新文章总阅读数
             mysql.where_sql = " _id=%s" %(wz_data['_id'])
-            mysql.table('wenzhang_info').save({'read_count':int(article_info['comment']['read_num']),
+            mysql.table('wechat_wenzhang_info').save({'read_count':int(article_info['comment']['read_num']),
                                                                             'like_count':int(article_info['comment']['like_num']),
                                                                             'comment_count': int(article_info['comment']['elected_comment_total_cnt'])})
     except KeyboardInterrupt:

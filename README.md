@@ -38,10 +38,10 @@ http://blog.csdn.net/niuxiaojia09/article/details/55260770
 
 3、python对应的库的安装好，pymysql、request、lxml、PIL、werkzeug等
 
-4、手动或自动在add_mp_list表中增加数据，然后运行auto_add_mp.py文件。
+4、手动或自动在wechat_add_mp_list表中增加数据，然后运行auto_add_mp.py文件。
    比如可以这样用：给auto_add_mp.py设定一个定时任务，5分钟或10分钟，然后前台页面文件让使用者添加待抓取的
    公众号信息，然后定时任务执行时就可以把这些公众号加入待抓取列表了
-   add_mp_list中
+   wechat_add_mp_list中
    name字段是模糊抓取，会根据输入的名称模糊加入10个公众号
    wx_hao字段是精确抓取，这个是公众号的微信号，只抓取一个
    这两个字段可以任意填入一个就行
@@ -50,22 +50,22 @@ http://blog.csdn.net/niuxiaojia09/article/details/55260770
    文件就会抓取已添加的公众号是否有新文章发出来。
    第一次使用会抓取公众号的最近10条群发数据
 
-6、执行updatewenzhang.py文件，该文件是抓取文章阅读及点攒数的。最新的数据会写入wenzhang_info表中，并且会在表wenzhang_statistics中
-   添加增量记录，可以根据wenzhang_statistics表中的数据生成曲线图
+6、执行updatewenzhang.py文件，该文件是抓取文章阅读及点攒数的。最新的数据会写入wechat_wenzhang_info表中，并且会在表wechat_wenzhang_statistics中
+   添加增量记录，可以根据wechat_wenzhang_statistics表中的数据生成曲线图
    使用中可以给该文件添加5分钟或其它时间的定时任务，这样就可以来生成对应的阅读曲线图了
 
 二、文件说明
 
 1、updatemp.py
-该文件遍历待抓取列表（数据库表：mp_info），查询表中的公众号是否有新文章发布，如果有，就抓取新的文章信息并
-放入数据库表wenzhang_info中
+该文件遍历待抓取列表（数据库表：wechat_mp_info），查询表中的公众号是否有新文章发布，如果有，就抓取新的文章信息并
+放入数据库表wechat_wenzhang_info中
 
 2、updatewenzhang.py
-该文件遍历文章表，然后抓取24小时之内的文章阅读数据存入表wenzhang_info和表wenzhang_statistics中
+该文件遍历文章表，然后抓取24小时之内的文章阅读数据存入表wechat_wenzhang_info和表wechat_wenzhang_statistics中
 
 3、 auto_add_mp.py
 该文件将指定的公众号添加到待抓取列表中
-该文件读取数据库表（add_mp_list）中的内容，然后将其中指定的公众号填入数据库表（mp_info）中
+该文件读取数据库表（wechat_add_mp_list）中的内容，然后将其中指定的公众号填入数据库表（wechat_mp_info）中
 
 
 

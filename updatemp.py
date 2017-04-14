@@ -29,7 +29,7 @@ wechats = WechatSogouApi() #不使用外部Cookie
 
 
 #数据库实例
-mysql = mysql('mp_info')
+mysql = mysql('wechat_mp_info')
 
 #循环获取数据库中所有公众号
 mysql.order_sql = " order by _id desc"
@@ -69,7 +69,7 @@ for item in mp_list:
             wz_url = wechat_info['url'];
             wz_list = wechats.get_gzh_message(url=wz_url)
             mysql.where_sql = " _id=%s" %(item['_id'])
-            mysql.table('mp_info').where({'_id':item['_id']}).save({'wz_url':wechat_info['url'],'logo_url':wechat_info['img'],'qr_url':wechat_info['qrcode']})
+            mysql.table('wechat_mp_info').where({'_id':item['_id']}).save({'wz_url':wechat_info['url'],'logo_url':wechat_info['img'],'qr_url':wechat_info['qrcode']})
         #type==49表示是图文消息
         qunfa_time = ''
         for wz_item in wz_list :
@@ -103,7 +103,7 @@ for item in mp_list:
                 #返回值为下载的html文件路径，可以自己保存到数据库
                 #index_html_path = wechats.down_html(article_info['yuan'],wz_item['title'])
 
-                mysql.table('wenzhang_info').add({'title':wz_item['title'],
+                mysql.table('wechat_wenzhang_info').add({'title':wz_item['title'],
                                                 'source_url':sourceurl,
                                                 'content_url':article_info['yuan'],
                                                 'cover_url':wz_item['cover'],
@@ -122,7 +122,7 @@ for item in mp_list:
         #更新最新推送ID
         if(last_qunfa_id < cur_qunfa_id):
             mysql.where_sql = " _id=%s" %(item['_id'])
-            mysql.table('mp_info').save({'last_qunfa_id':cur_qunfa_id,'last_qufa_time':qunfa_time,'update_time':time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))})
+            mysql.table('wechat_mp_info').save({'last_qunfa_id':cur_qunfa_id,'last_qufa_time':qunfa_time,'update_time':time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))})
     except KeyboardInterrupt:
         break
     except: #如果不想因为错误使程序退出，可以开启这两句代码

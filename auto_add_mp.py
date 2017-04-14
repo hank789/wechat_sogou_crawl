@@ -19,7 +19,7 @@ logger = logging.getLogger()
 wechats = WechatSogouApi()
 
 #数据库实例
-mysql = mysql('add_mp_list')
+mysql = mysql('wechat_add_mp_list')
 add_list = mysql.find(0)
 succ_count = 0
 
@@ -29,13 +29,13 @@ for add_item in add_list :
         if add_item['wx_hao']:
             print("add by wx_hao")
             mysql.where_sql = "wx_hao ='" + add_item['wx_hao'] + "'"
-            mp_data = mysql.table('mp_info').find(1)
+            mp_data = mysql.table('wechat_mp_info').find(1)
             if not mp_data :
                 wechat_info = wechats.get_gzh_info(add_item['wx_hao'])
                 time.sleep(1)
                 #print(wechat_info)
                 if(wechat_info != ""):
-                    mysql.table('mp_info').add({'name':wechat_info['name'],
+                    mysql.table('wechat_mp_info').add({'name':wechat_info['name'],
                                                 'wx_hao':wechat_info['wechatid'],
                                                 'company':wechat_info['renzhen'],
                                                 'description':wechat_info['jieshao'],
@@ -58,10 +58,10 @@ for add_item in add_list :
                 print(wx_item['name'])
                 mysql.where_sql = "wx_hao ='" + wx_item['wechatid'] + "'"
                 print(mysql.where_sql)
-                mp_data = mysql.table('mp_info').find(1)
+                mp_data = mysql.table('wechat_mp_info').find(1)
                 if not mp_data :
                     print(wx_item['name'].decode("utf-8"))
-                    mysql.table('mp_info').add({ 'name':wx_item['name'],
+                    mysql.table('wechat_mp_info').add({ 'name':wx_item['name'],
                                 'wx_hao':wx_item['wechatid'],
                                 'company':wx_item['renzhen'],
                                 'description':wx_item['jieshao'],
@@ -74,7 +74,7 @@ for add_item in add_list :
                     print(u"已经存在的公众号")
                 
         #删除已添加项
-        mysql.table('add_mp_list').where({'_id':add_item['_id']}).delete()
+        mysql.table('wechat_add_mp_list').where({'_id':add_item['_id']}).delete()
     except:
         print(u"出错，继续")
         continue
