@@ -50,7 +50,7 @@ http://blog.csdn.net/niuxiaojia09/article/details/55260770
    文件就会抓取已添加的公众号是否有新文章发出来。
    第一次使用会抓取公众号的最近10条群发数据
 
-6、执行updatewenzhang.py文件，该文件是抓取文章阅读及点攒数的。最新的数据会写入wechat_wenzhang_info表中，并且会在表wechat_wenzhang_statistics中
+6、执行updatewenzhang.py文件，该文件是抓取文章阅读及点攒数的。最新的数据会写入news_info表中，并且会在表wechat_wenzhang_statistics中
    添加增量记录，可以根据wechat_wenzhang_statistics表中的数据生成曲线图
    使用中可以给该文件添加5分钟或其它时间的定时任务，这样就可以来生成对应的阅读曲线图了
 
@@ -58,10 +58,10 @@ http://blog.csdn.net/niuxiaojia09/article/details/55260770
 
 1、updatemp.py
 该文件遍历待抓取列表（数据库表：wechat_mp_info），查询表中的公众号是否有新文章发布，如果有，就抓取新的文章信息并
-放入数据库表wechat_wenzhang_info中
+放入数据库表news_info中
 
 2、updatewenzhang.py
-该文件遍历文章表，然后抓取24小时之内的文章阅读数据存入表wechat_wenzhang_info和表wechat_wenzhang_statistics中
+该文件遍历文章表，然后抓取24小时之内的文章阅读数据存入表news_info和表wechat_wenzhang_statistics中
 
 3、 auto_add_mp.py
 该文件将指定的公众号添加到待抓取列表中

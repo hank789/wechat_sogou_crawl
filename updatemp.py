@@ -104,7 +104,7 @@ for item in mp_list:
                 #返回值为下载的html文件路径，可以自己保存到数据库
                 #index_html_path = wechats.down_html(article_info['yuan'],wz_item['title'])
 
-                mysql.table('wechat_wenzhang_info').add({'title':wz_item['title'],
+                mysql.table('news_info').add({'title':wz_item['title'],
                                                 'source_url':sourceurl,
                                                 'content_url':article_info['yuan'],
                                                 'cover_url':wz_item['cover'],

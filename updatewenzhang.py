@@ -43,7 +43,7 @@ for item in mp_list:
     try:
         #为了效率，首先查看该公众号是否有24小时之内的文章
         mysql.where_sql = "mp_id=%d and date_time >'%s'" %(item['_id'],yes_time)
-        wz_time = mysql.table('wechat_wenzhang_info').find(1)
+        wz_time = mysql.table('news_info').find(1)
         if not wz_time :
             continue
 
@@ -83,7 +83,7 @@ for item in mp_list:
                 article_info = wechats.deal_article(url=wz_item['content_url'])
                 mysql.where_sql = " mp_id=%d and qunfa_id=%d and msg_index=%d" %(item['_id'],wz_item['qunfa_id'],wz_item['main'])
                 #print(mysql.where_sql)
-                wz_data = mysql.table('wechat_wenzhang_info').find(1)
+                wz_data = mysql.table('news_info').find(1)
                 if not wz_data :
                     print(u"公众号有新文章了，请执行Updtaemp.py进行抓取")
                     continue
@@ -104,7 +104,7 @@ for item in mp_list:
                 #print('5')
             #更新文章总阅读数
             mysql.where_sql = " _id=%s" %(wz_data['_id'])
-            mysql.table('wechat_wenzhang_info').save({'read_count':int(article_info['comment']['read_num']),
+            mysql.table('news_info').save({'read_count':int(article_info['comment']['read_num']),
                                                                             'like_count':int(article_info['comment']['like_num']),
                                                                             'comment_count': int(article_info['comment']['elected_comment_total_cnt'])})
     except KeyboardInterrupt:

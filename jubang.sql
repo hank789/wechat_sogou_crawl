@@ -60,10 +60,10 @@ INSERT INTO `wechat_mp_info` VALUES ('276', '新榜', 'newrankcn', '上海看榜
 INSERT INTO `wechat_mp_info` VALUES ('278', '娱乐新榜', 'yulexinbang', '北京快络科技有限公司', '娱乐新人第一自媒体平台,为导演找新人,为新人找发展.深度开挖新人潜力与特色,助力新人演艺事业快速起步.向导演制片等影视从业人员提供第一手新晋艺人资料,实现艺人资源与影视需求的完美对接.', 'http://img01.sogoucdn.com/app/a/100520090/oIWsFt8lrEWgjvNDVlT1S7wL5Nyw', '', '2017-02-16 17:16:04', null, '0', '0', '0', null, 'http://mp.weixin.qq.com/profile?src=3&timestamp=1487236590&ver=1&signature=fd*NZOcIHHxSZQ6Y44LFP1WmzZvhuKe0sJd2PpGunRcL29nV7xxEmTpcgsDcugGeaigun7XgKvbtOjBxEEOaIQ==');
 
 -- ----------------------------
--- Table structure for `wechat_wenzhang_info`
+-- Table structure for `news_info`
 -- ----------------------------
-DROP TABLE IF EXISTS `wechat_wenzhang_info`;
-CREATE TABLE `wechat_wenzhang_info` (
+DROP TABLE IF EXISTS `news_info`;
+CREATE TABLE `news_info` (
   `_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `title` varchar(100) DEFAULT '' COMMENT '文章标题',
   `source_url` varchar(300) DEFAULT '' COMMENT '原文地址',
@@ -84,7 +84,7 @@ CREATE TABLE `wechat_wenzhang_info` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6559 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
--- Records of wechat_wenzhang_info
+-- Records of news_info
 -- ----------------------------
 
 -- ----------------------------
