@@ -126,8 +126,9 @@ for item in mp_list:
             mysql.table('wechat_mp_info').save({'last_qunfa_id':cur_qunfa_id,'last_qufa_time':qunfa_time,'update_time':time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))})
     except KeyboardInterrupt:
         break
-    except: #如果不想因为错误使程序退出，可以开启这两句代码
+    except Exception,e: #如果不想因为错误使程序退出，可以开启这两句代码
         print u"出错，继续"
+        print Exception,":",e
         continue
             
 print('success')

@@ -75,8 +75,9 @@ for add_item in add_list :
                 
         #删除已添加项
         mysql.table('wechat_add_mp_list').where({'_id':add_item['_id']}).delete()
-    except:
-        print(u"出错，继续")
+    except Exception,e: #如果不想因为错误使程序退出，可以开启这两句代码
+        print u"出错，继续"
+        print Exception,":",e
         continue
 
 
