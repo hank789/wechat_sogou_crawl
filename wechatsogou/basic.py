@@ -177,7 +177,7 @@ class WechatSogouBasic(WechatSogouBase):
             WechatSogouVcodeException: 解封失败，可能验证码识别失败
         """
         max_count = 0
-        while(max_count < 10) :
+        while(max_count < 5) :
             print(u"出现验证码，准备自动识别")
             max_count += 1
             logger.debug('vcode appear, using _jiefeng')
@@ -258,7 +258,7 @@ class WechatSogouBasic(WechatSogouBase):
         
         if hasattr(self, '_ocr'):
             max_count = 0
-            while(max_count < 10):
+            while(max_count < 5):
                 max_count += 1
                 timestr = str(time.time()).replace('.', '')
                 timever = timestr[0:13] + '.' + timestr[13:17]
