@@ -279,7 +279,7 @@ class WechatSogouBasic(WechatSogouBase):
                     post_url = 'http://mp.weixin.qq.com/mp/verifycode'
                     post_data = {
                         'cert': timever,
-                        'input': img_code
+                        'input': c
                     }
                     headers = {
                         "User-Agent": self._agent[random.randint(0, len(self._agent) - 1)],
