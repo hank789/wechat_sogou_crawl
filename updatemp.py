@@ -43,7 +43,7 @@ now_time = datetime.datetime(now_time.year, now_time.month, now_time.day, 0, 0, 
 
 for item in mp_list:
     try:
-        time.sleep(random.randrange(1,3))
+        time.sleep(random.randrange(2,5))
         #查看一下该号今天是否已经发送文章
         last_qunfa_id = item['last_qunfa_id']
         last_qunfa_time = item['last_qufa_time']
