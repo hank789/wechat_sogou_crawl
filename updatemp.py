@@ -90,7 +90,7 @@ for item in mp_list:
                 print(wz_item['content_url'])
                 if not wz_item['content_url'] :
                     continue
-                time.sleep(0.5)
+                time.sleep(1)
                 article_info = wechats.deal_article(url=wz_item['content_url'])
                 if not article_info :
                     continue

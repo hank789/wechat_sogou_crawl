@@ -258,7 +258,7 @@ class WechatSogouBasic(WechatSogouBase):
         
         if hasattr(self, '_ocr'):
             max_count = 0
-            while(max_count < 5):
+            while(max_count < 3):
                 max_count += 1
                 timestr = str(time.time()).replace('.', '')
                 timever = timestr[0:13] + '.' + timestr[13:17]
