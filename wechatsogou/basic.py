@@ -291,6 +291,8 @@ class WechatSogouBasic(WechatSogouBase):
                     if remsg['ret'] != 0:
                         print(u"搜狗返回验证码错误，1秒后更换验证码再次启动尝试，尝试次数：%d" %(max_count))
                         time.sleep(1)
+                        if max_count >= 3:
+                            exit()
                         continue
                     
                     print(u"搜狗返回验证码识别成功，继续执行")
