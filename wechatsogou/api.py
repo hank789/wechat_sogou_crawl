@@ -330,7 +330,6 @@ class WechatSogouApi(WechatSogouBasic):
         """
         url = kwargs.get('url', None)
         text = kwargs.get('text', None)
-
         if text:
             pass
         elif url:
@@ -441,14 +440,14 @@ class WechatSogouApi(WechatSogouBasic):
         
         yuan_url = self.deal_get_real_url(url)
 
-        comment = self.deal_article_comment(text=text)
+        #comment = self.deal_article_comment(text=text)
+
         content_html = self.deal_article_content(text=text)
         retu = {
             'yuan': yuan_url,
-            'comment': comment,
+            'comment': 1,
             'content_html': content_html
         }
-
         if title is not None:
             related = self.deal_article_related(url, title)
             retu['related'] = related
