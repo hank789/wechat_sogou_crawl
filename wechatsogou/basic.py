@@ -238,7 +238,7 @@ class WechatSogouBasic(WechatSogouBase):
                     }
                     self._session.get(pburl, headers=headers)
                     
-                    time.sleep(1)
+                    time.sleep(random.randrange(2,5))
                     
                     print(u"搜狗返回验证码识别成功，继续执行")
                     self._cache.set(config.cache_session_name, self._session)
