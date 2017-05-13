@@ -91,15 +91,11 @@ for item in mp_list:
                 if not wz_item['content_url'] :
                     continue
                 time.sleep(1)
-                article_info = wechats.deal_article(url=wz_item['content_url'])
-                if not article_info :
-                    continue
+                #article_info = wechats.deal_article(url=wz_item['content_url'])
+                
                 sourceurl = wz_item['source_url']
 
-                content_url = article_info['yuan'];
-                if len(article_info['yuan']) <= 1:
-                    content_url = wz_item['content_url']
-                    
+                content_url = wz_item['content_url'];
 
                 #如果想把文章下载到本地，请开启下面的语句,请确保已经安装：urllib2，httplib2，BeautifulSoup4
                 #返回值为下载的html文件路径，可以自己保存到数据库

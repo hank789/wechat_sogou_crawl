@@ -338,7 +338,7 @@ class WechatSogouApi(WechatSogouBasic):
         else:
             raise WechatSogouException('deal_content need param url or text')
 
-        bsObj = BeautifulSoup(text)
+        bsObj = BeautifulSoup(text,'lxml')
         content_text = bsObj.find("div", {"class":"rich_media_content", "id":"js_content"})
         content_html = content_text.get_text()
         # content_html = re.findall(u'<div class="rich_media_content " id="js_content">(.*?)</div>', text, re.S)
