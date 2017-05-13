@@ -267,54 +267,38 @@ class WechatSogouBasic(WechatSogouBase):
         print(u"出现验证码，准备自动识别2")
         logger.debug('vcode appear, using _ocr_for_get_gzh_article_by_url_text')
         
+        timestr = str(time.time()).replace('.', '')
+        timever = timestr[0:13] + '.' + timestr[13:17]
+        codeurl = 'http://mp.weixin.qq.com/mp/verifycode?cert=' + timever
+        coder = self._session.get(codeurl)
         if hasattr(self, '_ocr'):
-            max_count = 0
-            while(max_count < 3):
-                max_count += 1
-                timestr = str(time.time()).replace('.', '')
-                timever = timestr[0:13] + '.' + timestr[13:17]
-                codeurl = 'http://mp.weixin.qq.com/mp/verifycode?cert=' + timever
-                coder = self._session.get(codeurl)
-                logger.debug('vcode appear, using _ocr_for_get_gzh_article_by_url_text')
-                result = self._ocr.create(coder.content, 2040)
-                if not result.has_key('Result') :
-                    print(u"若快识别失败，1秒后更换验证码再次尝试，尝试次数：%d" %(max_count))
-                    time.sleep(1)
-                    continue #验证码识别错误，再次执行
-                else:
-                    print(u"若快识别成功 验证码：%s" %(result['Result']))
-
-                    img_code = result['Result']
-                    codeID = result['Id']
-
-                    post_url = 'http://mp.weixin.qq.com/mp/verifycode'
-                    post_data = {
-                        'cert': timever,
-                        'input': img_code
-                    }
-                    headers = {
-                        "User-Agent": self._agent[random.randint(0, len(self._agent) - 1)],
-                        'Host': 'mp.weixin.qq.com',
-                        'Referer': url
-                    }
-                    rr = self._session.post(post_url, post_data, headers=headers)
-                    remsg = eval(rr.text)
-                    if remsg['ret'] != 0:
-                        print(u"搜狗返回验证码错误，1秒后更换验证码再次启动尝试，尝试次数：%d" %(max_count))
-                        print(remsg)
-                        time.sleep(1)
-                        if max_count >= 3:
-                            exit()
-                        continue
-                    
-                    print(u"搜狗返回验证码识别成功，继续执行")
-                    self._cache.set(config.cache_session_name, self._session)
-                    logger.debug('ocr ', remsg['errmsg'])
-                    break
-
-                break
+            result = self._ocr.create(coder.content, 2040)
+            img_code = result['Result']
         else:
-            print(u"没有设置自动识别模块用户名、密码，无法执行")
+            result = None
+            im = readimg(coder.content)
+            im.show()
+            img_code = printf("please input code: ")
+        post_url = 'http://mp.weixin.qq.com/mp/verifycode'
+        post_data = {
+            'cert': timever,
+            'input': img_code
+        }
+        headers = {
+            "User-Agent": self._agent[random.randint(0, len(self._agent) - 1)],
+            'Host': 'mp.weixin.qq.com',
+            'Referer': url
+        }
+        rr = self._session.post(post_url, post_data, headers=headers)
+        print(rr.text)
+        remsg = eval(rr.text)
+        if remsg['ret'] != 0:
+            logger.error('cannot jiefeng get_gzh_article  because ' + remsg['errmsg'])
+            print(remsg)
+            raise WechatSogouVcodeException('cannot jiefeng get_gzh_article  because ' + remsg['errmsg'])
+        self._cache.set(config.cache_session_name, self._session)
+        logger.debug('ocr ', remsg['errmsg'])
+        return result
 
 
     def _replace_html(self, s):
