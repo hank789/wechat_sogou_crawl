@@ -10,7 +10,7 @@ import time
 import logging
 import logging.config
 import random
-
+import traceback
 # 日志
 logging.config.fileConfig('logging.conf')
 logger = logging.getLogger()
@@ -125,7 +125,8 @@ for item in mp_list:
         break
     except Exception,e: #如果不想因为错误使程序退出，可以开启这两句代码
         print u"出错，退出"
-        #print Exception,":",e
+        msg = traceback.format_exc() # 方式1
+        print (msg)
         #continue
         break
             
