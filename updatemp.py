@@ -83,6 +83,7 @@ for item in mp_list:
                 cur_qunfa_id = temp_qunfa_id
                 qunfa_time = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(wz_item['datetime']))
             succ_count += 1
+            print(wz_item['type'])
             if wz_item['type'] == '49':
                 #把文章写入数据库
                 #更新文章条数
