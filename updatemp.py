@@ -83,7 +83,6 @@ for item in mp_list:
                 cur_qunfa_id = temp_qunfa_id
                 qunfa_time = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(wz_item['datetime']))
             succ_count += 1
-            print(wz_item['type'])
             if wz_item['type'] == '49':
                 #把文章写入数据库
                 #更新文章条数
@@ -95,19 +94,20 @@ for item in mp_list:
                 article_info = wechats.deal_article(url=wz_item['content_url'])
                 if not article_info :
                     continue
-                if not article_info['comment'] :
-                    continue
                 sourceurl = wz_item['source_url']
-                if len(sourceurl) >= 300 :
-                    sourceurl = ''
+
+                content_url = article_info['yuan'];
+                if len(article_info['yuan']) <= 1:
+                    content_url = wz_item['content_url']
+                    
 
                 #如果想把文章下载到本地，请开启下面的语句,请确保已经安装：urllib2，httplib2，BeautifulSoup4
                 #返回值为下载的html文件路径，可以自己保存到数据库
                 #index_html_path = wechats.down_html(article_info['yuan'],wz_item['title'])
 
-                mysql.table('news_info').add({'title':wz_item['title'],
+                id = mysql.table('news_info').add({'title':wz_item['title'],
                                                 'source_url':sourceurl,
-                                                'content_url':article_info['yuan'],
+                                                'content_url':content_url,
                                                 'cover_url':wz_item['cover'],
                                                 'description':wz_item['digest'],
                                                 'date_time': time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(wz_item['datetime'])),
