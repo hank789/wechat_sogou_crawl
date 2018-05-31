@@ -65,7 +65,7 @@ for item in mp_list:
         if u'链接已过期' in wz_list:
             wechat_info = wechats.get_gzh_info(item['wx_hao'])
             print(wechat_info)
-            if not wechat_info.has_key('url') :
+            if not wechat_info :
                 continue
             print('guo qi sz chong xin huo qu success')
             wz_url = wechat_info['url'];
