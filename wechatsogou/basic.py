@@ -81,7 +81,19 @@ class WechatSogouBasic(WechatSogouBase):
            self._ocr = RClient(self.dama_name, self.dama_pswd, '70021', 'dcefe229cb9b4e1785b48fbc3525d011')
         ua = UserAgent()
         self._agent = [
-            ua.random
+            ua.random,
+            ua.random,
+            ua.random,
+            ua.random,
+            ua.random,
+            ua.random,
+            ua.random,
+            ua.random,
+            ua.random,
+            ua.random,
+            ua.random,
+            ua.random,
+            ua.random,
         ]
 
     def _get_elem_text(self, elem):
