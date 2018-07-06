@@ -167,14 +167,14 @@ class WechatSogouBasic(WechatSogouBase):
         if u'链接已过期' in r.text:
             return '链接已过期'
         if r.status_code == requests.codes.ok:
-            r.encoding = self._get_encoding_from_reponse(r)
+      :oding = self._get_encoding_from_reponse(r)
             if u'用户您好，您的访问过于频繁，为确认本次访问为正常用户行为，需要您协助验证' in r.text:
                 self._vcode_url = url
                 logger.error('出现验证码。。。')
                 print(u'用户您好，您的访问过于频繁，为确认本次访问为正常用户行为，需要您协助验证')
                 raise WechatSogouVcodeException('weixin.sogou.com verification code')
         else:
-            logger.error('requests status_code error', r.status_code)
+            logger.error('requests status_code error')
             raise WechatSogouRequestsException('requests status_code error', r.status_code)
         return r.text
 
@@ -517,74 +517,75 @@ class WechatSogouBasic(WechatSogouBase):
         uin = kwargs.get('uin', '')
         key = kwargs.get('key', '')
         items = list()
-        for listdic in msgdict['list']:
-            item = dict()
-            comm_msg_info = listdic['comm_msg_info']
-            item['qunfa_id'] = comm_msg_info.get('id', '')  # 不可判重，一次群发的消息的id是一样的
-            item['datetime'] = comm_msg_info.get('datetime', '')
-            item['type'] = str(comm_msg_info.get('type', ''))
-            if item['type'] == '1':
-                # 文字
-                item['content'] = comm_msg_info.get('content', '')
-            elif item['type'] == '3':
-                # 图片
-                item[
-                    'img_url'] = 'https://mp.weixin.qq.com/mp/getmediadata?__biz=' + biz + '&type=img&mode=small&msgid=' + \
-                                 str(item['qunfa_id']) + '&uin=' + uin + '&key=' + key
-            elif item['type'] == '34':
-                # 音频
-                item['play_length'] = listdic['voice_msg_ext_info'].get('play_length', '')
-                item['fileid'] = listdic['voice_msg_ext_info'].get('fileid', '')
-                item['audio_src'] = 'https://mp.weixin.qq.com/mp/getmediadata?__biz=' + biz + '&type=voice&msgid=' + \
-                                    str(item['qunfa_id']) + '&uin=' + uin + '&key=' + key
-            elif item['type'] == '49':
-                # 图文
-                app_msg_ext_info = listdic['app_msg_ext_info']
-                url = app_msg_ext_info.get('content_url')
-                if url:
-                    url = 'http://mp.weixin.qq.com' + url if 'http://mp.weixin.qq.com' not in url else url
-                else:
-                    url = ''
-                msg_index = 1
-                item['main'] = msg_index
-                item['title'] = app_msg_ext_info.get('title', '')
-                item['digest'] = app_msg_ext_info.get('digest', '')
-                item['fileid'] = app_msg_ext_info.get('fileid', '')
-                item['content_url'] = url
-                item['source_url'] = app_msg_ext_info.get('source_url', '')
-                item['cover'] = app_msg_ext_info.get('cover', '')
-                item['author'] = app_msg_ext_info.get('author', '')
-                item['copyright_stat'] = app_msg_ext_info.get('copyright_stat', '')
+        if msgdict.has_key('list'):
+            for listdic in msgdict['list']:
+                item = dict()
+                comm_msg_info = listdic['comm_msg_info']
+                item['qunfa_id'] = comm_msg_info.get('id', '')  # 不可判重，一次群发的消息的id是一样的
+                item['datetime'] = comm_msg_info.get('datetime', '')
+                item['type'] = str(comm_msg_info.get('type', ''))
+                if item['type'] == '1':
+                    # 文字
+                    item['content'] = comm_msg_info.get('content', '')
+                elif item['type'] == '3':
+                    # 图片
+                    item[
+                        'img_url'] = 'https://mp.weixin.qq.com/mp/getmediadata?__biz=' + biz + '&type=img&mode=small&msgid=' + \
+                                     str(item['qunfa_id']) + '&uin=' + uin + '&key=' + key
+                elif item['type'] == '34':
+                    # 音频
+                    item['play_length'] = listdic['voice_msg_ext_info'].get('play_length', '')
+                    item['fileid'] = listdic['voice_msg_ext_info'].get('fileid', '')
+                    item['audio_src'] = 'https://mp.weixin.qq.com/mp/getmediadata?__biz=' + biz + '&type=voice&msgid=' + \
+                                        str(item['qunfa_id']) + '&uin=' + uin + '&key=' + key
+                elif item['type'] == '49':
+                    # 图文
+                    app_msg_ext_info = listdic['app_msg_ext_info']
+                    url = app_msg_ext_info.get('content_url')
+                    if url:
+                        url = 'http://mp.weixin.qq.com' + url if 'http://mp.weixin.qq.com' not in url else url
+                    else:
+                        url = ''
+                    msg_index = 1
+                    item['main'] = msg_index
+                    item['title'] = app_msg_ext_info.get('title', '')
+                    item['digest'] = app_msg_ext_info.get('digest', '')
+                    item['fileid'] = app_msg_ext_info.get('fileid', '')
+                    item['content_url'] = url
+                    item['source_url'] = app_msg_ext_info.get('source_url', '')
+                    item['cover'] = app_msg_ext_info.get('cover', '')
+                    item['author'] = app_msg_ext_info.get('author', '')
+                    item['copyright_stat'] = app_msg_ext_info.get('copyright_stat', '')
+                    items.append(item)
+                    if app_msg_ext_info.get('is_multi', 0) == 1:
+                        for multidic in app_msg_ext_info['multi_app_msg_item_list']:
+                            url = multidic.get('content_url')
+                            if url:
+                                url = 'http://mp.weixin.qq.com' + url if 'http://mp.weixin.qq.com' not in url else url
+                            else:
+                                url = ''
+                            itemnew = dict()
+                            itemnew['qunfa_id'] = item['qunfa_id']
+                            itemnew['datetime'] = item['datetime']
+                            itemnew['type'] = item['type']
+                            msg_index += 1
+                            itemnew['main'] = msg_index
+                            itemnew['title'] = multidic.get('title', '')
+                            itemnew['digest'] = multidic.get('digest', '')
+                            itemnew['fileid'] = multidic.get('fileid', '')
+                            itemnew['content_url'] = url
+                            itemnew['source_url'] = multidic.get('source_url', '')
+                            itemnew['cover'] = multidic.get('cover', '')
+                            itemnew['author'] = multidic.get('author', '')
+                            itemnew['copyright_stat'] = multidic.get('copyright_stat', '')
+                            items.append(itemnew)
+                    continue
+                elif item['type'] == '62':
+                    item['cdn_videoid'] = listdic['video_msg_ext_info'].get('cdn_videoid', '')
+                    item['thumb'] = listdic['video_msg_ext_info'].get('thumb', '')
+                    item['video_src'] = 'https://mp.weixin.qq.com/mp/getcdnvideourl?__biz=' + biz + '&cdn_videoid=' + item[
+                        'cdn_videoid'] + '&thumb=' + item['thumb'] + '&uin=' + uin + '&key=' + key
                 items.append(item)
-                if app_msg_ext_info.get('is_multi', 0) == 1:
-                    for multidic in app_msg_ext_info['multi_app_msg_item_list']:
-                        url = multidic.get('content_url')
-                        if url:
-                            url = 'http://mp.weixin.qq.com' + url if 'http://mp.weixin.qq.com' not in url else url
-                        else:
-                            url = ''
-                        itemnew = dict()
-                        itemnew['qunfa_id'] = item['qunfa_id']
-                        itemnew['datetime'] = item['datetime']
-                        itemnew['type'] = item['type']
-                        msg_index += 1
-                        itemnew['main'] = msg_index
-                        itemnew['title'] = multidic.get('title', '')
-                        itemnew['digest'] = multidic.get('digest', '')
-                        itemnew['fileid'] = multidic.get('fileid', '')
-                        itemnew['content_url'] = url
-                        itemnew['source_url'] = multidic.get('source_url', '')
-                        itemnew['cover'] = multidic.get('cover', '')
-                        itemnew['author'] = multidic.get('author', '')
-                        itemnew['copyright_stat'] = multidic.get('copyright_stat', '')
-                        items.append(itemnew)
-                continue
-            elif item['type'] == '62':
-                item['cdn_videoid'] = listdic['video_msg_ext_info'].get('cdn_videoid', '')
-                item['thumb'] = listdic['video_msg_ext_info'].get('thumb', '')
-                item['video_src'] = 'https://mp.weixin.qq.com/mp/getcdnvideourl?__biz=' + biz + '&cdn_videoid=' + item[
-                    'cdn_videoid'] + '&thumb=' + item['thumb'] + '&uin=' + uin + '&key=' + key
-            items.append(item)
         return items
 
     def _get_gzh_article_text(self, url):
