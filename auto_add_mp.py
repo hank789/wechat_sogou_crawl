@@ -44,8 +44,12 @@ for add_item in add_list :
                                                 'wz_url': wechat_info['url'],
                                                 'last_qunfa_id': 0,
                                                 'create_time':time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))})
+                    #删除已添加项
+                    mysql.table('wechat_add_mp_list').where({'_id':add_item['_id']}).delete()
             else:
                 print(u"已经存在的公众号")
+                #删除已添加项
+                mysql.table('wechat_add_mp_list').where({'_id':add_item['_id']}).delete()
         elif add_item['name']:
             #获取对应信息
             print("add by name")
@@ -72,9 +76,6 @@ for add_item in add_list :
                                 'create_time':time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))})
                 else:
                     print(u"已经存在的公众号")
-                
-        #删除已添加项
-        mysql.table('wechat_add_mp_list').where({'_id':add_item['_id']}).delete()
     except Exception,e: #如果不想因为错误使程序退出，可以开启这两句代码
         print u"出错，继续"
         print Exception,":",e
