@@ -167,7 +167,7 @@ class WechatSogouBasic(WechatSogouBase):
         if u'链接已过期' in r.text:
             return '链接已过期'
         if r.status_code == requests.codes.ok:
-      :oding = self._get_encoding_from_reponse(r)
+            r.encoding = self._get_encoding_from_reponse(r)
             if u'用户您好，您的访问过于频繁，为确认本次访问为正常用户行为，需要您协助验证' in r.text:
                 self._vcode_url = url
                 logger.error('出现验证码。。。')
