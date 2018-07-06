@@ -10,6 +10,7 @@ import time
 import sys,locale
 import logging
 import logging.config
+import random
 
 # 日志
 logging.config.fileConfig('auto_add_mp_logging.conf')
