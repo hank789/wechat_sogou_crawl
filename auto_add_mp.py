@@ -32,7 +32,7 @@ for add_item in add_list :
             mp_data = mysql.table('wechat_mp_info').find(1)
             if not mp_data :
                 wechat_info = wechats.get_gzh_info(add_item['wx_hao'])
-                time.sleep(1)
+                time.sleep(random.randint(1, 20))
                 print(wechat_info)
                 if(wechat_info != ""):
                     mysql.table('wechat_mp_info').add({'name':wechat_info['name'],
@@ -54,7 +54,7 @@ for add_item in add_list :
             #获取对应信息
             print("add by name")
             wechat_infos = wechats.search_gzh_info(add_item['name'].encode('utf8'))
-            time.sleep(1)
+            time.sleep(random.randint(1, 20))
             #print(wechat_infos)
             for wx_item in wechat_infos :
                 #公众号数据写入数据库
