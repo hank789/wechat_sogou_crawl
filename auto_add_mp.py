@@ -33,7 +33,7 @@ for add_item in add_list :
             if not mp_data :
                 wechat_info = wechats.get_gzh_info(add_item['wx_hao'])
                 time.sleep(1)
-                #print(wechat_info)
+                print(wechat_info)
                 if(wechat_info != ""):
                     mysql.table('wechat_mp_info').add({'name':wechat_info['name'],
                                                 'wx_hao':wechat_info['wechatid'],
