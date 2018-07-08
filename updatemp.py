@@ -59,7 +59,7 @@ for item in mp_list:
             wz_url = wechat_info['url'];
             
         print(item['name'])
-        
+        time.sleep(random.randrange(5,20))
         #获取最近文章信息
         wz_list = wechats.get_gzh_message(url=wz_url)
         if u'链接已过期' in wz_list:
