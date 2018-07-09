@@ -77,6 +77,8 @@ for item in mp_list:
         for wz_item in wz_list :
             temp_qunfa_id = int(wz_item['qunfa_id'])
             if(last_qunfa_id >= temp_qunfa_id):
+                mysql.where_sql = " _id=%s" %(item['_id'])
+                mysql.table('wechat_mp_info').save({'update_time':time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))})
                 print(u"没有更新文章")
                 print(u"")
                 break
@@ -125,10 +127,9 @@ for item in mp_list:
     except KeyboardInterrupt:
         break
     except Exception,e: #如果不想因为错误使程序退出，可以开启这两句代码
-        print u"出错，退出"
+        print u"出错，继续下一条"
         msg = traceback.format_exc() # 方式1
         print (msg)
-        #continue
-        break
+        continue
             
 print('success')
