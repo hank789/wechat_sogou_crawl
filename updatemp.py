@@ -68,6 +68,7 @@ for item in mp_list:
             if not wechat_info :
                 continue
             print('guo qi sz chong xin huo qu success')
+            time.sleep(random.randrange(5,20))
             wz_url = wechat_info['url'];
             wz_list = wechats.get_gzh_message(url=wz_url)
             mysql.where_sql = " _id=%s" %(item['_id'])
